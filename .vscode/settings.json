@@ -1,0 +1,15 @@
+{
+    "git.ignoreLimitWarning": true,
+    "cSpell.words": [
+        "Insta",
+        "authed",
+        "followee",
+        "permisison",
+        "simplejwt",
+        "unfollow"
+    ],
+    "cSpell.enableFiletypes": [
+        "!javascriptreact",
+        "django-html"
+    ]
+}
