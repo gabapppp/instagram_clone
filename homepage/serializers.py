@@ -16,7 +16,7 @@ class PostSerializer(serializers.ModelSerializer):
     comments_count = serializers.IntegerField(read_only=True)
     class Meta:
         model = Post
-        fields = ['pk', 'caption', 'user', 'date_posted', 'images', 'likes_count', 'comments_count']
+        fields = ['pk', 'user', 'caption', 'date_posted', 'images', 'likes_count', 'comments_count']
 
     def create(self, validated_data):
         images = validated_data.pop('images')
@@ -28,7 +28,7 @@ class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField('username', read_only=True)
     class Meta:
         model = Comment
-        fields = ['post' ,'content', 'user', 'date_created']
+        fields = ['user', 'post' ,'content', 'date_created']
 
 class LikeSerializer(serializers.ModelSerializer):
     liker = serializers.SlugRelatedField('username', read_only=True)

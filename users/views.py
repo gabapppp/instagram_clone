@@ -1,21 +1,18 @@
-from django.db.models import aggregates
-from rest_framework import viewsets, mixins, permissions, exceptions, status, decorators, response, permissions
-from rest_framework import generics
+from rest_framework import viewsets, mixins, permissions, status, decorators, response, permissions
 from rest_framework.generics import CreateAPIView
 from django.contrib import auth
 from .models import * 
 from .serializers import * 
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.permissions import AllowAny
 from .serializers import MyTokenObtainPairSerializer
 
 # Create your views here.   
 class MyObtainTokenPairView(TokenObtainPairView):
-    permission_classes = [AllowAny,]
+    permission_classes = [permissions.AllowAny]
     serializer_class = MyTokenObtainPairSerializer
     
     
-class RegisterView(generics.CreateAPIView):
+class RegisterView(CreateAPIView):
     queryset = auth.get_user_model().objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]

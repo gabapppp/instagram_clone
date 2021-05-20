@@ -1,5 +1,5 @@
 from django.db.models import aggregates
-from rest_framework import generics, viewsets, mixins
+from rest_framework import viewsets, mixins
 from .permissions import AuthenticatedCreation, AuthorDeletion
 from .models import *
 from .serializers import *
@@ -29,7 +29,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user, modelimage=self.request.data.get('images'))
+        serializer.save(user=self.request.user, modelimage=self.request.data.get('images'))
 
 
 class CommentViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):
@@ -47,7 +47,7 @@ class CommentViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mix
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class LikeViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):

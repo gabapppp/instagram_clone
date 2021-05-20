@@ -31,10 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CORS_ALLOWED_ORIGINS = [
-    "localhost:3000"
-]
-CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -47,12 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'homepage.apps.HomepageConfig',
     'users.apps.UsersConfig',
-    'frontend.apps.FrontendConfig',
+    'directmessages.apps.DirectmessagesConfig',
     'rest_framework',
     'notifications',
     'django_filters',
     'rest_framework_simplejwt',
     'drf_extra_fields',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -140,9 +137,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework_simplejwt.authentication.JWTAuthentication',],
-
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+        ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ],
+    #'DEFAULT_PARSER_CLASSES': [
+    #   'rest_framework.parsers.JSONParser',
+    #]
 }
 
 
@@ -150,3 +153,8 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CORS_URLS_REGEX = r'^/api/.*$'
