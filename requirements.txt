@@ -2,7 +2,7 @@
 django
 djangorestframework
 django-notifications-hq
-django-filtered
+django-filter
 djangorestframework-jwt
 django-extra-fields
 django-cors-headers
