@@ -1,0 +1,14 @@
+{
+    "name": "myapp",
+    "version": "1.0.0",
+    "scripts": {
+      "build": "cd insta-web && npm install && npm run build"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "cacheDirectories": [
+      "node_modules",
+      "insta-web/node_modules"
+    ]
+  }
+  
