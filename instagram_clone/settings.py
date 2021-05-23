@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '9_8@t%jyz@65!60r1ruvss-=m+h4p*rd8j(6&4x#q-q5h)fd*6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['instaclone201.herokuapp.com']
 
 
 # Application definition
