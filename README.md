@@ -1,1 +1,1 @@
-# instagram_clone
+# instagram_clone using django + django rest framework + reactjs
