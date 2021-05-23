@@ -1,0 +1,10 @@
+
+django
+djangorestframework
+django-notifications-hq
+django-filtered
+djangorestframework-jwt
+django-extra-fields
+django-cors-headers
+gunicorn
+django-heroku

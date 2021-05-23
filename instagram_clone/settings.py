@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-
+import django_heroku
 from django.conf import settings
 
 
@@ -159,3 +159,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 CORS_URLS_REGEX = r'^/api/.*$'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
