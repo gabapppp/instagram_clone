@@ -6,7 +6,7 @@ from rest_framework import routers
 from . import views as post_views
 from users import views as user_views
 from directmessages.views import InboxViewSet
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
 router = routers.DefaultRouter()
 router.register('posts', post_views.PostViewSet)
@@ -20,4 +20,5 @@ urlpatterns = [
     path('register/', user_views.RegisterView.as_view(), name='register'),
     path('token/', user_views.MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify')
 ]

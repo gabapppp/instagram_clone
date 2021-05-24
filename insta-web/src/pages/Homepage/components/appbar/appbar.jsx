@@ -2,18 +2,30 @@ import React from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import LogoButtons from './button';
+import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import '@fontsource/grand-hotel';
+import Menu from './menu';
+
 
 const useStyles = makeStyles((theme) =>({
   root: {
-    flexGrow: 1,
+    flexGrow: 2,
   },
   toolbar: {
-    width: '100%',
+    width: '90%',
     maxWidth: '900px',
-    margin: 'auto'
+    alignSelf: 'center',
+    maxHeight: '100%',
+  },
+  logoButton: {
+    fontFamily: 'Grand Hotel',
+    fontSize: '25px',
+    textTransform: 'none',
+    '&:hover':{
+      backgroundColor: 'transparent'
+    },
   },
   search: {
     position: 'relative',
@@ -23,11 +35,9 @@ const useStyles = makeStyles((theme) =>({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
+    margin: 'auto',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
+      margin: 'auto',
       width: 'auto',
     },
   },
@@ -61,7 +71,7 @@ export default function AppBarHeader() {
     <div className={classes.root}>
       <AppBar position="static" color="inherit">
         <Toolbar className={classes.toolbar}>
-          <LogoButtons />
+          <Button className={classes.logoButton}>Instapy</Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -75,6 +85,7 @@ export default function AppBarHeader() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
+          <Menu />
         </Toolbar>
       </AppBar>
     </div>

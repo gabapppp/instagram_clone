@@ -1,11 +1,10 @@
 import './App.css';
-import AppBarHeader from './components/appbar/appbar'
+import HomePage from './pages/Homepage/Homepage';
 
 
 function App() {
   return (
-    <AppBarHeader/>
-
+    <HomePage />
   );
 }
 

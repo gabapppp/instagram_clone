@@ -29,7 +29,7 @@ SECRET_KEY = '9_8@t%jyz@65!60r1ruvss-=m+h4p*rd8j(6&4x#q-q5h)fd*6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['instaclone201.herokuapp.com']
+ALLOWED_HOSTS = ['https://instaclone201.herokuapp.com/']
 
 
 # Application definition
