@@ -12,5 +12,6 @@
     "cSpell.enableFiletypes": [
         "!javascriptreact",
         "django-html"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }

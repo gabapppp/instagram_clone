@@ -158,7 +158,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
-CORS_URLS_REGEX = r'^/api/.*$'
+
 
 DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
