@@ -27,7 +27,8 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     
     @decorators.action(detail=False, methods=('get',))
     def me(self, request):
-        serializer = self.get_serializer(instance=self.request.user)
+        queryset=Profile.objects.get(user=self.request.user.id)
+        serializer = self.get_serializer(instance=queryset)
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
     @decorators.action(detail=True, methods=('post',))

@@ -39,21 +39,17 @@ class RegisterSerializer(serializers.ModelSerializer):
         Profile.objects.create(user=user)
         return user
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.ReadOnlyField(source='user.email')
     first_name = serializers.ReadOnlyField(source='user.first_name')
     last_name = serializers.ReadOnlyField(source='user.last_name')
-    username = serializers.PrimaryKeyRelatedField(read_only=True)
+    username = serializers.ReadOnlyField(source='user.username')
     following = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['username', 'first_name', 'last_name', 'email', 'following']
+        fields = [ 'username', 'first_name', 'last_name', 'email', 'following']
     
     def get_following(self, profile):
         return profile.user.following.filter(follower=self.context['request'].user).exists()

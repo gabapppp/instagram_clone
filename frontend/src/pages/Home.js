@@ -6,7 +6,7 @@ const Home = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    UserService.getPublicContent().then(
+    UserService.getMyProfile().then(
       (response) => {
         setContent(response.data);
       },

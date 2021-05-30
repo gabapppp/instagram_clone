@@ -32,9 +32,9 @@ function App() {
       <div>
         {currentUser ? (
           <div>
-            <h1>Welcome! {currentUser.username}</h1>
+            <h1>Welcome!</h1>
             <Button
-              onClick={(currentUser) => {
+              onClick={() => {
                 logOut();
               }}
             >
@@ -44,10 +44,10 @@ function App() {
         ) : (
           <h1>
             Login
-            <Link href={"/login"}>HERE</Link>
+            <Link href="/login">HERE</Link>
           </h1>
         )}
-        <div className="container mt-3">
+        <div className="container">
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
