@@ -1,33 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import PostList from "../components/Home/postlist";
 
-import UserService from "../services/user.service";
+import PostService from "../services/posts.service";
 
 const Home = () => {
-  const [content, setContent] = useState("");
+  const [feed, setFeed] = useState([]);
 
   useEffect(() => {
-    UserService.getMyProfile().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
+    async function fetchData() {
+      await PostService.getFeed().then((response) => {
+        setFeed(response.data.results);
+      });
+    }
 
-        setContent(_content);
-      }
-    );
+    fetchData();
   }, []);
-
-  return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
-    </div>
-  );
+  return <PostList data={feed} />;
 };
 
 export default Home;

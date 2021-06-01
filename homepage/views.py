@@ -14,7 +14,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
     )
     serializer_class = PostSerializer
     filterset_class = PostFilterSet
-    #permission_classes = [AuthenticatedCreation, AuthorDeletion]
+    permission_classes = [AuthenticatedCreation, AuthorDeletion]
     pagination_class = PostPagination
 
 

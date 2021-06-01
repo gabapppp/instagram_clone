@@ -1,18 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Router, Switch, Route, Link } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 
 import "./App.css";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import Header from "./components/common/AppBar";
 
-import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
 
 import { history } from "./helpers/history";
-import { Button } from "@material-ui/core";
 
 function App() {
   const { user: currentUser } = useSelector((state) => state.auth);
@@ -23,30 +22,10 @@ function App() {
       dispatch(clearMessage()); // clear message when changing location
     });
   }, [dispatch]);
-
-  const logOut = () => {
-    dispatch(logout());
-  };
   return (
     <Router history={history}>
       <div>
-        {currentUser ? (
-          <div>
-            <h1>Welcome!</h1>
-            <Button
-              onClick={() => {
-                logOut();
-              }}
-            >
-              LOGOUT
-            </Button>
-          </div>
-        ) : (
-          <h1>
-            Login
-            <Link href="/login">HERE</Link>
-          </h1>
-        )}
+        {currentUser ? <Header /> : <Redirect to="/login" />}
         <div className="container">
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
