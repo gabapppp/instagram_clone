@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import UserService from "../services/user.service";
+import Info from "../components/Profile/info";
 const Profile = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [profile, setProfile] = useState("");
@@ -25,22 +26,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>
-          <strong>{profile.username}</strong> Profile
-        </h3>
-      </header>
-      <p>
-        <strong>Token:</strong> {currentUser.access} ...{" "}
-        {currentUser.access.substr(currentUser.access.length - 20)}
-      </p>
-      <p>
-        <strong>Name:</strong> {profile.first_name} {profile.last_name}
-      </p>
-      <p>
-        <strong>Email:</strong> {profile.email}
-      </p>
+    <div style={{ marginTop: "90px" }}>
+      <Info data={profile} />
     </div>
   );
 };

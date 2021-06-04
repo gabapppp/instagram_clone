@@ -1,1 +1,1 @@
-web: gunicorn gettingstarted.wsgi
+web: gunicorn instagram_clone.instagram_clone.backend.wsgi

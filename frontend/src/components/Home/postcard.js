@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -13,7 +12,7 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { InputBase } from "@material-ui/core";
+import { Button, InputBase } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,20 +27,20 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   comment: {
-    border: "1px solid grey",
-    borderRadius: theme.shape.borderRadius,
-    margin: theme.spacing(0, 3, 3, 3),
+    borderTop: "1px solid lightgrey",
+    margin: theme.spacing(0),
   },
   inputInput: {
-    padding: theme.spacing(0, 0, 0, 0),
+    padding: theme.spacing(0, 0, 0, 20),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
       width: "20ch",
     },
   },
+  cmtBtn: {},
 }));
 
 export default function PostCard(props) {
@@ -57,6 +56,7 @@ export default function PostCard(props) {
       />
     ));
   }
+  const cmtBtnClick = () => {};
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -99,8 +99,12 @@ export default function PostCard(props) {
             classes={{
               input: classes.inputInput,
             }}
+            style={{ marginRight: "auto" }}
             inputProps={{ "aria-label": "Comment" }}
           ></InputBase>
+          <Button className={classes.cmtBtn} onClick={cmtBtnClick}>
+            Post
+          </Button>
         </CardActions>
       </div>
     </Card>

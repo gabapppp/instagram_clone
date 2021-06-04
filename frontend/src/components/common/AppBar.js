@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    border: "0.04px solid grey",
+    border: "1px solid lightgrey",
     backgroundColor: fade(theme.palette.common.black, 0.05),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
@@ -68,14 +68,14 @@ const useStyles = makeStyles((theme) => ({
   },
   sectionDesktop: {
     display: "none",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       display: "flex",
     },
     margin: "auto",
   },
   sectionMobile: {
     display: "flex",
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
       display: "none",
     },
   },
