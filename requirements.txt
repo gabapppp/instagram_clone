@@ -3,7 +3,7 @@ django
 djangorestframework
 django-notifications-hq
 django-filter
-djangorestframework-jwt
+djangorestframework-simplejwt
 django-extra-fields
 django-cors-headers
 whitenoise
