@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import LikeService from "../../services/like.service";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -45,8 +48,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PostCard(props) {
   const classes = useStyles();
-  const { user, caption, date_posted, likes_count, images } = props.data;
+  const { pk, user, caption, date_posted, likes_count, images } = props.data;
   var date = new Date(date_posted).toLocaleDateString();
+  const [isLike, setIsLike] = useState(false);
   function renderImage(images) {
     return images.map((index) => (
       <CardMedia
@@ -56,9 +60,38 @@ export default function PostCard(props) {
       />
     ));
   }
+
+  useEffect(() => {
+    async function fetchLike() {
+      await LikeService.getLike(pk).then((res) => {
+        if (res.data.length > 0) {
+          setIsLike(res.data[0].pk);
+        }
+      });
+    }
+    fetchLike();
+  });
+  const like = (e) => {
+    e.preventDefault();
+    if (isLike) {
+      LikeService.delLike(isLike).then(() => {
+        props.data.likes_count -= 1;
+        setIsLike(false);
+      });
+    } else {
+      LikeService.postLike(pk).then(() => {
+        props.data.likes_count += 1;
+        setIsLike(true);
+      });
+    }
+  };
   const cmtBtnClick = () => {};
   return (
-    <Card className={classes.root}>
+    <Card
+      className={classes.root}
+      elevation={0}
+      style={{ border: "1px solid #eeeeee" }}
+    >
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -84,7 +117,7 @@ export default function PostCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" onClick={like}>
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">

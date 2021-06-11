@@ -6,7 +6,7 @@ from notifications.signals import notify
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    image = models.ImageField(default='media/default.png', upload_to='media/profile_pics')
     bio = models.CharField(max_length=150, blank=True)
     # bio is a field in this Post model. it specifies a class attribute Charfield and represents a database column
 

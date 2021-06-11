@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins, permissions, status, decorators, response, permissions
+from rest_framework import viewsets, mixins, permissions, status, decorators, response, permissions, filters
 from rest_framework.generics import CreateAPIView
 from django.contrib import auth
 from .models import * 
@@ -18,12 +18,13 @@ class RegisterView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
 
-class ProfileViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin):
+class ProfileViewSet(viewsets.ReadOnlyModelViewSet, mixins.RetrieveModelMixin):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.AllowAny,)
+    filter_backends = [filters.SearchFilter]
+    search_fields= ['user__username']
     lookup_field = 'user__username'
-
     
     @decorators.action(detail=False, methods=('get',))
     def me(self, request):

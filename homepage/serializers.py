@@ -34,4 +34,4 @@ class LikeSerializer(serializers.ModelSerializer):
     liker = serializers.SlugRelatedField('username', read_only=True)
     class Meta:
         model = Like
-        fields = ['post', 'liker', 'date_created']
+        fields = ['pk', 'post', 'liker', 'date_created']

@@ -6,10 +6,11 @@ import PostCard from "./postcard";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: "90px",
+    paddingTop: "80px",
+    backgroundColor: "#fafafa",
   },
   card: {
-    padding: theme.spacing(2),
+    paddingTop: theme.spacing(2),
     color: theme.palette.text.secondary,
   },
 }));

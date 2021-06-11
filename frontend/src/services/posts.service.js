@@ -15,7 +15,4 @@ const getPost = (post_id) => {
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default {
-  getFeed,
-  getPost,
-};
+export default { getFeed, getPost };

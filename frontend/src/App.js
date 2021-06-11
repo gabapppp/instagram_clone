@@ -5,6 +5,7 @@ import { Router, Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Header from "./components/common/AppBar";
@@ -24,12 +25,13 @@ function App() {
   }, [dispatch]);
   return (
     <Router history={history}>
-      <div>
+      <div className="App">
         {currentUser ? <Header /> : <Redirect to="/login" />}
         <div className="container">
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
           </Switch>
         </div>

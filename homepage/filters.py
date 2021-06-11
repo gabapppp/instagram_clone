@@ -25,4 +25,4 @@ class CommentFilterSet(django_filters.FilterSet):
 class LikeFilterSet(django_filters.FilterSet):
     class Meta:
         model = Like
-        fields = ('post', 'liker')
+        fields = ('post',)

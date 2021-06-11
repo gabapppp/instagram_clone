@@ -1,5 +1,5 @@
 from django.db.models import aggregates
-from rest_framework import viewsets, mixins
+from rest_framework import permissions, viewsets, mixins
 from .permissions import AuthenticatedCreation, AuthorDeletion
 from .models import *
 from .serializers import *
@@ -56,7 +56,6 @@ class LikeViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
     filterset_class = LikeFilterSet
     permission_classes = (AuthenticatedCreation, AuthorDeletion)
 
-
     def get_queryset(self):
         queryset = super().get_queryset()
 
@@ -64,6 +63,8 @@ class LikeViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
             queryset = queryset.none()
 
         return queryset
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(liker=self.request.user)

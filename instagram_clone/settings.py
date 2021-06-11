@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'notifications',
     'django_filters',
-    'rest_framework_simplejwt',
     'drf_extra_fields',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
@@ -87,6 +86,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instagram_clone.wsgi.application'
+
 
 
 # Database

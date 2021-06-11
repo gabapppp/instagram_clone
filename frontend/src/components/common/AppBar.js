@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -17,9 +17,10 @@ import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutline
 import MoreIcon from "@material-ui/icons/MoreVert";
 import "@fontsource/grand-hotel";
 import { useHistory } from "react-router";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 import { logout } from "../../actions/auth";
+import UserService from "../../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -83,8 +84,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+
+  const [inputSearch, setInputSearch] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -116,6 +119,20 @@ export default function Header(props) {
     handleMenuClose();
     history.push(`/profile`);
   };
+
+  const handleSearchOnchange = (e) => {
+    e.preventDefault();
+    setInputSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      await UserService.search(inputSearch).then((res) => {
+        console.log(res);
+      });
+    }
+    fetchData();
+  }, [inputSearch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -186,7 +203,12 @@ export default function Header(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar color="inherit" position="fixed">
+      <AppBar
+        elevation={0}
+        style={{ borderBottom: "1px solid #eeeeee " }}
+        color="inherit"
+        position="fixed"
+      >
         <Toolbar>
           <Button
             style={{ textTransform: "none", margin: "auto" }}
@@ -207,6 +229,7 @@ export default function Header(props) {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
+              onChange={handleSearchOnchange}
             />
           </div>
           <div className={classes.grow} />

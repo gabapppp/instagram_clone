@@ -20,7 +20,7 @@ class Post(models.Model):
 
 class PostImage(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
-    modelimage = models.ImageField(upload_to='post_images')
+    modelimage = models.ImageField(upload_to='media/post_images')
 
 
 class Comment(models.Model):

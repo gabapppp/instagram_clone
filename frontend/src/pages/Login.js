@@ -137,8 +137,15 @@ export default function Login(props) {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link
+                href="/register"
+                variant="body2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  props.history.push("/register");
+                }}
+              >
+                {"Don't have an account? Sign up"}
               </Link>
             </Grid>
           </Grid>

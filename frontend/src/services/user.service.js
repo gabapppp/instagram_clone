@@ -8,11 +8,18 @@ const getMyProfile = () => {
 };
 
 const getAnyProfile = (username) => {
-  return axios.get(API_URL, { headers: authHeader() });
+  return axios.get(API_URL + username + "/", { headers: authHeader() });
+};
+const search = (query) => {
+  return axios.get(API_URL, {
+    headers: authHeader(),
+    params: { search: query },
+  });
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getMyProfile,
   getAnyProfile,
+  search,
 };
