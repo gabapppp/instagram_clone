@@ -14,5 +14,16 @@ const getPost = (post_id) => {
   });
 };
 
+const postPost = (caption, image) => {
+  return axios.post(
+    API_URL,
+    {
+      caption: caption,
+      images: image,
+    },
+    { headers: authHeader() }
+  );
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getFeed, getPost };
+export default { getFeed, getPost, postPost };

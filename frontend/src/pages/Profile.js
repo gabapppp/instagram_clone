@@ -10,14 +10,9 @@ const Profile = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await UserService.getMyProfile()
-        .then((response) => {
-          console.log(response.data);
-          setProfile(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      await UserService.getMyProfile().then((response) => {
+        setProfile(response.data);
+      });
     }
     fetchData();
   }, []);
@@ -26,7 +21,7 @@ const Profile = () => {
   }
 
   return (
-    <div style={{ marginTop: "90px" }}>
+    <div style={{ marginTop: "64px" }}>
       <Info data={profile} />
     </div>
   );

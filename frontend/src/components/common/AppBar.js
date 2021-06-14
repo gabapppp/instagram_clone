@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import AccountCircleTwoToneIcon from "@material-ui/icons/AccountCircleTwoTone";
+import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
@@ -19,53 +17,36 @@ import "@fontsource/grand-hotel";
 import { useHistory } from "react-router";
 import Button from "@material-ui/core/Button";
 
+import Search from "./Search";
+import PostAdd from "./Post";
+
 import { logout } from "../../actions/auth";
-import UserService from "../../services/user.service";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 0,
     alignItems: "center",
   },
+  titleBtn: {
+    textTransform: "none",
+    margin: "auto",
+    "&:hover": {
+      backgroundColor: "#fff",
+    },
+  },
   title: {
     fontFamily: "Grand Hotel",
-    "&:hover": {
-      backgroundColor: "none",
-    },
     fontSize: 27,
   },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     border: "1px solid lightgrey",
-    backgroundColor: fade(theme.palette.common.black, 0.05),
-    width: "100%",
+    backgroundColor: "#eeeeee",
     [theme.breakpoints.up("sm")]: {
       width: "auto",
     },
     margin: "auto",
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
   },
   sectionDesktop: {
     display: "none",
@@ -82,12 +63,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header(props) {
+export default function Header() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-
-  const [inputSearch, setInputSearch] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -119,20 +98,6 @@ export default function Header(props) {
     handleMenuClose();
     history.push(`/profile`);
   };
-
-  const handleSearchOnchange = (e) => {
-    e.preventDefault();
-    setInputSearch(e.target.value);
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      await UserService.search(inputSearch).then((res) => {
-        console.log(res);
-      });
-    }
-    fetchData();
-  }, [inputSearch]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -194,7 +159,7 @@ export default function Header(props) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircleTwoToneIcon />
+          <Avatar></Avatar>
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -210,43 +175,30 @@ export default function Header(props) {
         position="fixed"
       >
         <Toolbar>
-          <Button
-            style={{ textTransform: "none", margin: "auto" }}
-            onClick={routeToHome}
-          >
+          <Button className={classes.titleBtn} onClick={routeToHome}>
             <Typography className={classes.title} variant="h6">
               Instapy
             </Typography>
           </Button>
           <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-              onChange={handleSearchOnchange}
-            />
+            <Search />
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton color="inherit" onClick={routeToHome}>
               <HomeIcon style={{ fontSize: 27 }} />
             </IconButton>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <TelegramIcon style={{ fontSize: 27 }} />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <FavoriteBorderOutlinedIcon style={{ fontSize: 27 }} />
               </Badge>
             </IconButton>
+            <PostAdd />
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -255,7 +207,7 @@ export default function Header(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircleTwoToneIcon style={{ fontSize: 27 }} />
+              <Avatar style={{ height: "30px", width: "30px" }}></Avatar>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

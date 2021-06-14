@@ -29,7 +29,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user, modelimage=self.request.data.get('images'))
+        serializer.save(user=self.request.user)
 
 
 class CommentViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):

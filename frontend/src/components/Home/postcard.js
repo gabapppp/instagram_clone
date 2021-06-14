@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   comment: {
-    borderTop: "1px solid lightgrey",
+    borderTop: "1px solid #eeeeee",
     margin: theme.spacing(0),
   },
   inputInput: {

@@ -6,11 +6,11 @@ class PostImageSerializer(serializers.ModelSerializer):
     modelimage = fields.Base64ImageField()
     class Meta:
         model = PostImage
-        fields = ['id' ,'modelimage']
+        fields = ['pk', 'modelimage']
     
 
 class PostSerializer(serializers.ModelSerializer):
-    images = PostImageSerializer(many=True) 
+    images = PostImageSerializer(many=True)
     user = serializers.SlugRelatedField('username', read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
@@ -21,7 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         images = validated_data.pop('images')
         post = Post.objects.create(**validated_data)
-        PostImage.objects.bulk_create([models.Image(post=post, **image) for image in images])
+        PostImage.objects.bulk_create([PostImage(post=post, **modelimage) for modelimage in images])
         return post
 
 class CommentSerializer(serializers.ModelSerializer):

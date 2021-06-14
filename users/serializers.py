@@ -1,4 +1,3 @@
-from re import I
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -49,7 +48,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = [ 'username', 'first_name', 'last_name', 'email', 'following']
+        fields = [ 'username', 'first_name', 'last_name', 'email', 'following', 'image']
     
     def get_following(self, profile):
         return profile.user.following.filter(follower=self.context['request'].user).exists()

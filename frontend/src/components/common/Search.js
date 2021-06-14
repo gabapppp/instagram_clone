@@ -1,115 +1,105 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Dialog from "@material-ui/core/Dialog";
-import PersonIcon from "@material-ui/icons/Person";
-import AddIcon from "@material-ui/icons/Add";
-import Typography from "@material-ui/core/Typography";
-import { blue } from "@material-ui/core/colors";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import SearchIcon from "@material-ui/icons/Search";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-const emails = ["username@gmail.com", "user02@gmail.com"];
-const useStyles = makeStyles({
-  root: {
-    position: "static",
-  },
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-});
+import userService from "../../services/user.service";
+import { useHistory } from "react-router";
 
-function SimpleDialog(props) {
-  const classes = useStyles();
-  const { onClose, selectedValue, open } = props;
-
-  const handleClose = () => {
-    onClose(selectedValue);
-  };
-
-  const handleListItemClick = (value) => {
-    onClose(value);
-  };
-
-  return (
-    <div className={classes.root}>
-      <Dialog
-        onClose={handleClose}
-        aria-labelledby="simple-dialog-title"
-        open={open}
-      >
-        <DialogTitle id="simple-dialog-title">Set backup account</DialogTitle>
-        <List>
-          {emails.map((email) => (
-            <ListItem
-              button
-              onClick={() => handleListItemClick(email)}
-              key={email}
-            >
-              <ListItemAvatar>
-                <Avatar className={classes.avatar}>
-                  <PersonIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={email} />
-            </ListItem>
-          ))}
-
-          <ListItem
-            autoFocus
-            button
-            onClick={() => handleListItemClick("addAccount")}
-          >
-            <ListItemAvatar>
-              <Avatar>
-                <AddIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Add account" />
-          </ListItem>
-        </List>
-      </Dialog>
-    </div>
-  );
+function sleep(delay = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 }
 
-SimpleDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired,
-};
+const useStyles = makeStyles((theme) => ({
+  input: {
+    transition: theme.transitions.create("width"),
+    [theme.breakpoints.up("sm")]: {
+      width: "29ch",
+    },
+  },
+  searchIcon: {
+    paddingLeft: theme.spacing(1),
+  },
+}));
 
-export default function SearchDialog(props) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = useState(emails[1]);
+export default function Search() {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [value, setValue] = useState(null);
+  const loading = open && options.length === 0;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    let active = true;
 
-  const handleClose = (value) => {
-    setOpen(false);
-    setSelectedValue(value);
-  };
+    if (!loading) {
+      return undefined;
+    }
+
+    (async () => {
+      const user = await userService.search().then((res) => {
+        return res.data;
+      });
+      await sleep(1e3);
+      if (active) {
+        setOptions(Object.keys(user).map((key) => user[key].username));
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open]);
+
+  const history = useHistory();
 
   return (
-    <div>
-      <Typography variant="subtitle1">Selected: {selectedValue}</Typography>
-      <br />
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open simple dialog
-      </Button>
-      <SimpleDialog
-        selectedValue={selectedValue}
-        open={open}
-        onClose={handleClose}
-      />
-    </div>
+    <Autocomplete
+      id="search"
+      style={{ width: "250px" }}
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+        history.push("/profile");
+      }}
+      open={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
+      disableClearable
+      options={options}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="Search…"
+          className={classes.input}
+          InputProps={{
+            ...params.InputProps,
+            disableUnderline: true,
+            startAdornment: <SearchIcon className={classes.searchIcon} />,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
+              </React.Fragment>
+            ),
+          }}
+        />
+      )}
+    />
   );
 }

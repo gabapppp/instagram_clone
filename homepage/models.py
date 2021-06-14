@@ -21,7 +21,7 @@ class Post(models.Model):
 class PostImage(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
     modelimage = models.ImageField(upload_to='media/post_images')
-
+    
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
