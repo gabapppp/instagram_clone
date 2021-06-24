@@ -45,21 +45,3 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ['pk', 'post', 'liker', 'date_created']
-
-class GenericNotificationRelatedField(serializers.RelatedField):
-
-    def to_representation(self, value):
-        if isinstance(value, Like):
-            serializer = LikeSerializer(value)
-        if isinstance(value, Comment):
-            serializer = CommentSerializer(value)
-        if isinstance(value, Follower):
-            serializer = FollowerSerializer(value)
-
-        return serializer.data
-
-
-class NotificationSerializer(serializers.Serializer):
-    recipient = ProfileSerializer(User, read_only=True)
-    unread = serializers.BooleanField(read_only=True)
-    target = GenericNotificationRelatedField(read_only=True)

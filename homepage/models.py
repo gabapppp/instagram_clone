@@ -34,7 +34,7 @@ class Comment(models.Model):
         n = 4
         truncatewords = Truncator(self.content).words(n)
         if (self.user != self.post.user):
-            notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment', target=self)
+            notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment')
 
 
 class Like(models.Model):
@@ -48,4 +48,4 @@ class Like(models.Model):
     def save(self, *args, **kwargs):
         super(Like, self).save(*args, **kwargs)
         if(self.liker != self.post.user):
-            notify.send(self.liker, recipient=self.post.user, verb='liked your post!', action_object=self.post, description='like', target=self.pk)
+            notify.send(self.liker, recipient=self.post.user, verb='liked your post!', description=self.post.pk, target=self)

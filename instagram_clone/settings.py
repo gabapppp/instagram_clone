@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'directmessages.apps.DirectmessagesConfig',
     'rest_framework',
     'notifications',
-    'notifications_rest',
+    'notifications_app',
     'django_filters',
     'drf_extra_fields',
     'corsheaders',
