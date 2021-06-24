@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import userService from "../../services/user.service";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,7 +11,6 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Button from "@material-ui/core/button";
 import IconButton from "@material-ui/core/IconButton";
-import { getprofile } from "../../actions/profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +41,7 @@ export default function Info(props) {
     follower_count,
     image,
   } = profile;
-  console.log(props);
+  const [loading, setLoading] = useState();
   const { profile: currentProfile } = useSelector((state) => state.profile);
 
   useEffect(() => {
@@ -51,8 +50,9 @@ export default function Info(props) {
         setProfile(response.data);
       });
     }
+    setLoading(false);
     fetchData();
-  }, [username]);
+  }, [username, loading]);
 
   const handleSetClick = (event) => {
     event.preventDefault();
@@ -61,13 +61,15 @@ export default function Info(props) {
 
   const handleFollow = (e) => {
     e.preventDefault();
-    console.log(userService.follow(username));
+    userService.follow(username).then(() => {
+      setLoading(true);
+    });
   };
 
   const handleUnfollow = (e) => {
     e.preventDefault();
     userService.unfollow(username).then(() => {
-      setProfile({ isFollowing: false });
+      setLoading(true);
     });
   };
 
