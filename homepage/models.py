@@ -25,6 +25,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
+    
     def __str__(self):
         return f'Comment from {self.user} on {self.post}'
 
@@ -32,7 +33,8 @@ class Comment(models.Model):
         super(Comment, self).save(*args, **kwargs)
         n = 4
         truncatewords = Truncator(self.content).words(n)
-        notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment', target=self)
+        if (self.user != self.post.user):
+            notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment', target=self)
 
 
 class Like(models.Model):
@@ -45,5 +47,5 @@ class Like(models.Model):
 
     def save(self, *args, **kwargs):
         super(Like, self).save(*args, **kwargs)
-        notify.send(self.liker, recipient=self.post.user, verb='liked your post!', action_object=self.post, description='like', target=self)
-
+        if(self.liker != self.post.user):
+            notify.send(self.liker, recipient=self.post.user, verb='liked your post!', action_object=self.post, description='like', target=self.pk)
