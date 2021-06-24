@@ -7,10 +7,10 @@ const getFeed = () => {
   return axios.get(API_URL, { headers: authHeader(), params: { feed: true } });
 };
 
-const getPost = (post_id) => {
+const getPost = (username) => {
   return axios.get(API_URL, {
     headers: authHeader(),
-    params: { post_id: post_id },
+    params: { username: username },
   });
 };
 
@@ -24,6 +24,9 @@ const postPost = (caption, image) => {
     { headers: authHeader() }
   );
 };
+const delPost = (pk) => {
+  return axios.delete(API_URL + pk + "/", { headers: authHeader() });
+};
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getFeed, getPost, postPost };
+export default { getFeed, getPost, postPost, delPost };

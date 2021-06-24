@@ -15,6 +15,16 @@ function sleep(delay = 0) {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    border: "1px solid lightgrey",
+    backgroundColor: "#eeeeee",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+    margin: "auto",
+  },
   input: {
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -63,43 +73,52 @@ export default function Search() {
 
   const history = useHistory();
 
+  useEffect(() => {
+    if (value) {
+      history.push("/" + value);
+      setValue(null);
+    }
+  }, [value, history]);
+
   return (
-    <Autocomplete
-      id="search"
-      style={{ width: "250px" }}
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-        history.push("/profile");
-      }}
-      open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-      disableClearable
-      options={options}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder="Search…"
-          className={classes.input}
-          InputProps={{
-            ...params.InputProps,
-            disableUnderline: true,
-            startAdornment: <SearchIcon className={classes.searchIcon} />,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? (
-                  <CircularProgress color="inherit" size={20} />
-                ) : null}
-              </React.Fragment>
-            ),
-          }}
-        />
-      )}
-    />
+    <div className={classes.root}>
+      <Autocomplete
+        id="search"
+        style={{ width: "250px" }}
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+          history.push("/profile");
+        }}
+        open={open}
+        onOpen={() => {
+          setOpen(true);
+        }}
+        onClose={() => {
+          setOpen(false);
+        }}
+        disableClearable
+        options={options}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            placeholder="Search…"
+            className={classes.input}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              startAdornment: <SearchIcon className={classes.searchIcon} />,
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                </React.Fragment>
+              ),
+            }}
+          />
+        )}
+      />
+    </div>
   );
 }

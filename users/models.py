@@ -5,7 +5,7 @@ from notifications.signals import notify
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     image = models.ImageField(default='media/default.png', upload_to='media/profile_pics')
     bio = models.CharField(max_length=150, blank=True)
     # bio is a field in this Post model. it specifies a class attribute Charfield and represents a database column
@@ -23,7 +23,7 @@ class Profile(models.Model):
 
 class Follower(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followings')
     date_followed = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

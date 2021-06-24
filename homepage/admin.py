@@ -6,7 +6,6 @@ from .models import Post, PostImage, Comment, Like
 class PostImageInLine(admin.TabularInline):
     model = PostImage
 
-
 class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageInLine]
 

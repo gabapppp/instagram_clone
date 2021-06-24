@@ -12,8 +12,8 @@ const initialState = user
   ? { isLoggedIn: true, user }
   : { isLoggedIn: false, user: null };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default function (state = initialState, action) {
+// eslint-disable-next-line
+export default (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -48,4 +48,4 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};

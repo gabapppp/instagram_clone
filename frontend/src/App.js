@@ -17,7 +17,6 @@ import { history } from "./helpers/history";
 function App() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   useEffect(() => {
     history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location
@@ -32,7 +31,7 @@ function App() {
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/:username" component={Profile} />
           </Switch>
         </div>
       </div>

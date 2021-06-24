@@ -6,12 +6,12 @@ from rest_framework import routers
 from . import views as post_views
 from users import views as user_views
 from directmessages.views import InboxViewSet
-from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 router = routers.DefaultRouter()
 router.register('posts', post_views.PostViewSet)
 router.register('comments', post_views.CommentViewSet)
-router.register('like', post_views.LikeViewSet)
+router.register('likes', post_views.LikeViewSet)
 router.register('profile', user_views.ProfileViewSet)
 router.register('inbox', InboxViewSet)
 
@@ -19,6 +19,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('register/', user_views.RegisterView.as_view(), name='register'),
     path('token/', user_views.MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/verify/', TokenVerifyView.as_view(), name='token_verify')
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
 ]

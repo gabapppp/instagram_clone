@@ -14,7 +14,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password', 'confirm_password']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'confirm_password']
         extra_kwargs = {
             'first_name': {'required' : True},
             'last_name': {'required' : True},
@@ -36,23 +36,30 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         Profile.objects.create(user=user)
+        Follower.objects.create(follower=user, following=user)
         return user
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    pk = serializers.ReadOnlyField(source='user.pk')
     email = serializers.ReadOnlyField(source='user.email')
     first_name = serializers.ReadOnlyField(source='user.first_name')
     last_name = serializers.ReadOnlyField(source='user.last_name')
     username = serializers.ReadOnlyField(source='user.username')
-    following = serializers.SerializerMethodField()
-
+    following_count = serializers.IntegerField(read_only=True)
+    follower_count = serializers.IntegerField(read_only=True)
+    isFollowing = serializers.SerializerMethodField()
     class Meta:
         model = Profile
-        fields = [ 'username', 'first_name', 'last_name', 'email', 'following', 'image']
+        fields = ['pk', 'username', 'first_name', 'last_name', 'email', 'isFollowing', 'image', 'following_count', 'follower_count',]
     
-    def get_following(self, profile):
-        return profile.user.following.filter(follower=self.context['request'].user).exists()
-
+    def get_isFollowing(self, profile):
+        return profile.user.followings.filter(follower=self.context['request'].user).exists()
+        
+class FollowerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follower
+        fields = ['follower', 'following']
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
@@ -63,6 +70,3 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         return token
-
-
-

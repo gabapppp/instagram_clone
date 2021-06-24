@@ -65,7 +65,7 @@ export default function Login(props) {
     setLoading(true);
     dispatch(login(username, password))
       .then(() => {
-        props.history.push("/profile");
+        props.history.push("/");
         window.location.reload();
       })
       .catch(() => {

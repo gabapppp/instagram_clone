@@ -10,10 +10,6 @@ class Post(models.Model):
     caption = models.CharField(max_length=2200, blank=True)  # caption is a field in this Post model. it specifies a class attribute Charfield and represents a database column. blank=True lets the field be optional left empty
     date_posted = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # foreign key calls on an outside model whether imported or in this file, CASCADE will delete the post if
-    # the User is deleted but wont delete the user if the post if deleted
-    # likes?
-    # comments?
-    # picture = models.
 
     def __str__(self):
         return self.caption
@@ -30,7 +26,7 @@ class Comment(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.content
+        return f'Comment from {self.user} on {self.post}'
 
     def save(self, *args, **kwargs):
         super(Comment, self).save(*args, **kwargs)
@@ -43,6 +39,9 @@ class Like(models.Model):
     liker = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
     date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Like from {self.liker} on {self.post}'
 
     def save(self, *args, **kwargs):
         super(Like, self).save(*args, **kwargs)

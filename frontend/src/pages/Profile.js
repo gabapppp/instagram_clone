@@ -1,30 +1,66 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-import UserService from "../services/user.service";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import Info from "../components/Profile/info";
-const Profile = () => {
-  const { user: currentUser } = useSelector((state) => state.auth);
-  const [profile, setProfile] = useState("");
+import postsService from "../services/posts.service";
+import { getprofile } from "../actions/profile";
+
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/paper";
+import GridList from "@material-ui/core/GridList";
+import GridListTile from "@material-ui/core/GridListTile";
+import { connect } from "react-redux";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: "auto",
+    maxWidth: 600,
+    minHeight: 500,
+  },
+}));
+function Profile() {
+  const classes = useStyles();
+  const { username } = useParams();
+  const [post, setPost] = useState([]);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getprofile());
+  }, [dispatch]);
 
   useEffect(() => {
     async function fetchData() {
-      await UserService.getMyProfile().then((response) => {
-        setProfile(response.data);
+      await postsService.getPost(username).then((response) => {
+        setPost(response.data.results);
       });
     }
     fetchData();
-  }, []);
-  if (!currentUser) {
-    return <Redirect to="/login" />;
-  }
+  }, [username]);
 
   return (
     <div style={{ marginTop: "64px" }}>
-      <Info data={profile} />
+      <Info username={username} />
+      <Paper className={classes.paper} square elevation={0}>
+        <GridList cellHeight={196} className={classes.gridList} cols={3}>
+          {post.map((index) => (
+            <GridListTile key={index.pk} cols={1}>
+              <img src={index.images[0].modelimage} alt={index.caption} />
+            </GridListTile>
+          ))}
+        </GridList>
+      </Paper>
     </div>
   );
-};
+}
 
-export default Profile;
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
+export default connect(mapStateToProps)(Profile);

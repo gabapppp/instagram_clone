@@ -10,10 +10,27 @@ const getMyProfile = () => {
 const getAnyProfile = (username) => {
   return axios.get(API_URL + username + "/", { headers: authHeader() });
 };
+
 const search = (query) => {
   return axios.get(API_URL, {
     headers: authHeader(),
     params: { search: query },
+  });
+};
+
+const follow = (username) => {
+  return axios.post(
+    API_URL + username + "/follow/",
+    {},
+    {
+      headers: authHeader(),
+    }
+  );
+};
+
+const unfollow = (username) => {
+  return axios.delete(API_URL + username + "/unfollow/", {
+    headers: authHeader(),
   });
 };
 
@@ -22,4 +39,6 @@ export default {
   getMyProfile,
   getAnyProfile,
   search,
+  follow,
+  unfollow,
 };

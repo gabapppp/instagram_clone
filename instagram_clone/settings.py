@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'directmessages.apps.DirectmessagesConfig',
     'rest_framework',
     'notifications',
+    'notifications_rest',
     'django_filters',
     'drf_extra_fields',
     'corsheaders',
@@ -153,8 +154,10 @@ REST_FRAMEWORK = {
         ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
-    ]
+    ],
 }
+
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
 
 SIMPLE_JWT = {
@@ -166,8 +169,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-
-DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())

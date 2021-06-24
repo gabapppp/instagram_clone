@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-import LikeService from "../../services/like.service";
+import likeService from "../../services/like.service";
+import cmtService from "../../services/cmt.service";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -11,10 +13,10 @@ import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import PostDelDialog from "./PostDelDialog";
 import { Button, InputBase } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     paddingTop: "90%",
-  },
-  avatar: {
-    backgroundColor: red[500],
   },
   comment: {
     borderTop: "1px solid #eeeeee",
@@ -48,44 +47,57 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PostCard(props) {
   const classes = useStyles();
-  const { pk, user, caption, date_posted, likes_count, images } = props.data;
+  const { pk, user, avt, caption, date_posted, images } = props;
+  const [likes_count, setLikesCount] = useState(props.likes_count);
+  const [isLike, setIsLike] = useState(props.isLike);
   var date = new Date(date_posted).toLocaleDateString();
-  const [isLike, setIsLike] = useState(false);
+  const [content, setContent] = useState("");
+  const [pkLike, setPkLike] = useState();
+  const { profile: currentProfile } = useSelector((state) => state.profile);
   function renderImage(images) {
     return images.map((index) => (
       <CardMedia
         className={classes.media}
-        key={index.id}
+        key={index.pk}
         image={index.modelimage}
       />
     ));
   }
 
   useEffect(() => {
-    async function fetchLike() {
-      await LikeService.getLike(pk).then((res) => {
-        if (res.data.length > 0) {
-          setIsLike(res.data[0].pk);
-        }
-      });
+    if (isLike) {
+      async function fetchPkLike() {
+        await likeService.getLike(pk, currentProfile.pk).then((response) => {
+          setPkLike(response.data[0].pk);
+        });
+      }
+      fetchPkLike();
     }
-    fetchLike();
-  });
+  }, [pk, isLike, currentProfile.pk]);
   const like = (e) => {
     e.preventDefault();
     if (isLike) {
-      LikeService.delLike(isLike).then(() => {
-        props.data.likes_count -= 1;
+      likeService.delLike(pkLike).then(() => {
         setIsLike(false);
+        setLikesCount(likes_count - 1);
       });
     } else {
-      LikeService.postLike(pk).then(() => {
-        props.data.likes_count += 1;
+      likeService.postLike(pk).then(() => {
         setIsLike(true);
+        setLikesCount(likes_count + 1);
       });
     }
   };
-  const cmtBtnClick = () => {};
+  const handleCMTOnChange = (e) => {
+    e.preventDefault();
+    setContent(e.target.value);
+  };
+  const cmtBtnClick = (e) => {
+    e.preventDefault();
+    cmtService.postcmt(pk, content).then(() => {
+      setContent("");
+    });
+  };
   return (
     <Card
       className={classes.root}
@@ -93,16 +105,8 @@ export default function PostCard(props) {
       style={{ border: "1px solid #eeeeee" }}
     >
       <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        avatar={<Avatar src={"http://localhost:8000" + avt} />}
+        action={<PostDelDialog pk={pk} />}
         title={
           <Typography variant="h6" fontStyle="bold">
             {user}
@@ -118,9 +122,9 @@ export default function PostCard(props) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={like}>
-          <FavoriteIcon />
+          {isLike ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="cmt">
           <ModeCommentOutlinedIcon />
         </IconButton>
         <Typography>{likes_count} Likes</Typography>
@@ -133,7 +137,8 @@ export default function PostCard(props) {
               input: classes.inputInput,
             }}
             style={{ marginRight: "auto" }}
-            inputProps={{ "aria-label": "Comment" }}
+            value={content}
+            onChange={handleCMTOnChange}
           ></InputBase>
           <Button className={classes.cmtBtn} onClick={cmtBtnClick}>
             Post

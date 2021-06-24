@@ -1,56 +1,124 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import userService from "../../services/user.service";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Button from "@material-ui/core/button";
+import IconButton from "@material-ui/core/IconButton";
+import { getprofile } from "../../actions/profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
   paper: {
-    paddingTop: theme.spacing(4),
+    padding: theme.spacing(2),
     margin: "auto",
     maxWidth: 600,
+    borderBottom: "1px solid #eeeeee",
   },
   image: {
     width: 128,
     height: 128,
-  },
-  img: {
-    margin: "auto",
-    display: "block",
-    maxWidth: "100%",
-    maxHeight: "100%",
+    margin: theme.spacing(2),
   },
 }));
 
 export default function Info(props) {
   const classes = useStyles();
-  const { username, image } = props.data;
+  const { username } = props;
+  const [profile, setProfile] = useState([]);
+  const {
+    first_name,
+    last_name,
+    isFollowing,
+    following_count,
+    follower_count,
+    image,
+  } = profile;
+  console.log(props);
+  const { profile: currentProfile } = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    async function fetchData() {
+      await userService.getAnyProfile(username).then((response) => {
+        setProfile(response.data);
+      });
+    }
+    fetchData();
+  }, [username]);
+
+  const handleSetClick = (event) => {
+    event.preventDefault();
+    console.log("settings on click");
+  };
+
+  const handleFollow = (e) => {
+    e.preventDefault();
+    console.log(userService.follow(username));
+  };
+
+  const handleUnfollow = (e) => {
+    e.preventDefault();
+    userService.unfollow(username).then(() => {
+      setProfile({ isFollowing: false });
+    });
+  };
+
+  const renderFollow = (
+    <>
+      {currentProfile.username !== username ? (
+        <>
+          {isFollowing ? (
+            <Button variant="primary" onClick={handleUnfollow}>
+              Unfollow
+            </Button>
+          ) : (
+            <Button variant="primary" onClick={handleFollow}>
+              Follow
+            </Button>
+          )}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper} elevation={0} padding={2}>
-        <Grid container spacing={2}>
+      <Paper className={classes.paper} square elevation={0}>
+        <Grid container spacing={6}>
           <Grid item>
             <ButtonBase>
               <Avatar className={classes.image} alt="complex" src={image} />
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs container direction="column" spacing={5}>
               <Grid item xs>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h4" xs={6}>
                   {username}
+                  {renderFollow}
                 </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Follower: {12} Following:{12}
+                <Typography variant="body1" gutterBottom>
+                  {follower_count} Follower {following_count} Following
                 </Typography>
-                <Typography variant="body2">Pham Ngoc Khiem</Typography>
+                <Typography variant="h6">
+                  {first_name} {last_name}
+                </Typography>
               </Grid>
+            </Grid>
+            <Grid item>
+              <IconButton onClick={handleSetClick}>
+                <SettingsIcon />
+              </IconButton>
             </Grid>
           </Grid>
         </Grid>

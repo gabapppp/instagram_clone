@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/button";
 import IconButton from "@material-ui/core/IconButton";
-import AddAPhotoOutlined from "@material-ui/icons/AddAPhotoOutlined";
+import AddBoxOutlinedIcon from "@material-ui/icons/AddBoxOutlined";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -9,6 +10,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import postsService from "../../services/posts.service";
+
+const useStyles = makeStyles((theme) => ({
+  dialogPaper: {
+    minHeight: "80vh",
+    maxHeight: "80vh",
+  },
+}));
 
 const convertBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -23,6 +31,7 @@ const convertBase64 = (file) => {
   });
 };
 export default function PostAdd() {
+  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState([]);
@@ -60,24 +69,27 @@ export default function PostAdd() {
 
   return (
     <div>
-      <IconButton color="primary" onClick={handleClickOpen}>
-        <AddAPhotoOutlined />
+      <IconButton color="inherit" onClick={handleClickOpen}>
+        <AddBoxOutlinedIcon style={{ fontSize: 30 }} />
       </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
+        fullWidth={true}
+        maxWidth="lg"
+        classes={{ paper: classes.dialogPaper }}
       >
-        <DialogTitle id="form-dialog-title">Add new photo</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add some new photos</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             id="caption"
             label="Caption"
             type="text"
-            fullWidth
             onChange={handleCaptionChange}
           />
+          <br />
           <TextField
             type="file"
             inputProps={{
@@ -89,7 +101,6 @@ export default function PostAdd() {
             size="small"
           />
         </DialogContent>
-
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel

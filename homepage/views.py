@@ -1,6 +1,6 @@
 from django.db.models import aggregates
-from rest_framework import permissions, viewsets, mixins
-from .permissions import AuthenticatedCreation, AuthorDeletion
+from rest_framework import viewsets, mixins
+from .permissions import AuthenticatedCreation, AuthorDeletion, AuthorLikeDeletion
 from .models import *
 from .serializers import *
 from .filters import PostFilterSet, LikeFilterSet, CommentFilterSet
@@ -45,6 +45,10 @@ class CommentViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mix
             queryset = queryset.none()
 
         return queryset
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -54,7 +58,7 @@ class LikeViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
     queryset = Like.objects.all()
     serializer_class = LikeSerializer
     filterset_class = LikeFilterSet
-    permission_classes = (AuthenticatedCreation, AuthorDeletion)
+    permission_classes = (AuthenticatedCreation, AuthorLikeDeletion)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -63,6 +67,7 @@ class LikeViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
             queryset = queryset.none()
 
         return queryset
+
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
