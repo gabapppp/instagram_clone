@@ -10,7 +10,7 @@ from notifications.models import Notification
 class UnreadNotificationsList(ViewSet):
     serializer_class = NotificationSerializer
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request):
         queryset = Notification.objects.filter(recipient_id=request.user.id, unread=True)
         return Response(NotificationSerializer(queryset, many=True).data)
 
@@ -27,9 +27,8 @@ class MarkAllAsRead(APIView):
 class MarkAsRead(APIView):
     serializer_class = NotificationSerializer
 
-    def get(self, request, *args, **kwargs):
-        notification_id = kwargs.get('slug')
-        notification_obj = Notification.objects.get(id=notification_id)
+    def get(self, request, pk, format=None):
+        notification_obj = Notification.objects.get(id=pk)
         notification_obj.unread = False
         notification_obj.save()
         return Response({'code': 'OK'}, status=status.HTTP_200_OK)
@@ -38,9 +37,8 @@ class MarkAsRead(APIView):
 class MarkAsUnread(APIView):
     serializer_class = NotificationSerializer
 
-    def get(self, request, *args, **kwargs):
-        notification_id = kwargs.get('slug')
-        notification_obj = Notification.objects.get(id=notification_id)
+    def get(self, request, pk, format=None):
+        notification_obj = Notification.objects.get(id=pk)
         notification_obj.unread = True
         notification_obj.save()
         return Response({'code': 'OK'}, status=status.HTTP_200_OK)
@@ -49,8 +47,8 @@ class MarkAsUnread(APIView):
 class Delete(APIView):
     serializer_class = NotificationSerializer
 
-    def delete(self, request, *args, **kwargs):
-        notification_id = kwargs.get('slug')
+    def delete(self, request, pk, format=None):
+        notification_id = pk
         notification_obj = Notification.objects.get(id=notification_id)
         notification_obj.delete()
         return Response({'code': 'OK'}, status=status.HTTP_200_OK)

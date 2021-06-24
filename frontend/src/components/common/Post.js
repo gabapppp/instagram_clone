@@ -69,8 +69,8 @@ export default function PostAdd() {
 
   return (
     <div>
-      <IconButton color="inherit" onClick={handleClickOpen}>
-        <AddBoxOutlinedIcon style={{ fontSize: 30 }} />
+      <IconButton color="action" onClick={handleClickOpen}>
+        <AddBoxOutlinedIcon style={{ fontSize: 37 }} />
       </IconButton>
       <Dialog
         open={open}

@@ -33,6 +33,7 @@ class GenericNotificationRelatedField(RelatedField):
 class NotificationSerializer(ModelSerializer):
     recipient = UserSerializer()
     actor = UserSerializer()
+    unread = serializers.BooleanField()
     timestamp = serializers.DateTimeField(read_only=True)                                     
     target = GenericNotificationRelatedField(read_only=True)
     class Meta:

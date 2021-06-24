@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
+import Notifications from "./Notifications";
 import "@fontsource/grand-hotel";
 import { useHistory } from "react-router";
 import Button from "@material-ui/core/Button";
@@ -21,6 +21,7 @@ import PostAdd from "./Post";
 
 import { logout } from "../../actions/auth";
 import { getprofile } from "../../actions/profile";
+import { setNotifications } from "../../actions/notifications";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -44,26 +45,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #eeeeee",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
+
 export default function Header() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const divRef = useRef();
   const { profile: currentProfile } = useSelector((state) => state.profile);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const id = isMenuOpen ? "simple-popover" : undefined;
 
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getprofile());
+    dispatch(setNotifications());
   }, [dispatch]);
   const routeToHome = () => {
     history.push(`/`);
   };
 
   const handleProfileMenuOpen = (e) => {
-    setAnchorEl(divRef.current);
+    setAnchorEl(e.currentTarget);
   };
 
   const handleMenuClose = () => {
@@ -82,17 +100,16 @@ export default function Header() {
   };
 
   const renderMenu = (
-    <Menu
+    <StyledMenu
+      id="customized-menu"
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={Boolean(anchorEl)}
       onClose={handleMenuClose}
-      open={isMenuOpen}
     >
       <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
-    </Menu>
+    </StyledMenu>
   );
   return (
     <div className={classes.grow}>
@@ -111,29 +128,24 @@ export default function Header() {
           <Search />
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton color="inherit" onClick={routeToHome}>
-              <HomeIcon style={{ fontSize: 27 }} />
+            <IconButton onClick={routeToHome}>
+              <HomeIcon color="action" style={{ fontSize: 37 }} />
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton>
               <Badge color="secondary">
-                <TelegramIcon style={{ fontSize: 27 }} />
+                <TelegramIcon color="action" style={{ fontSize: 37 }} />
               </Badge>
             </IconButton>
             <PostAdd />
-            <IconButton color="inherit">
-              <Badge color="secondary">
-                <FavoriteBorderOutlinedIcon style={{ fontSize: 27 }} />
-              </Badge>
-            </IconButton>
+            <Notifications />
             <IconButton
-              edge="end"
+              aria-controls="customized-menu"
+              aria-haspopup="true"
+              variant="contained"
               onClick={handleProfileMenuOpen}
-              color="inherit"
-              aria-describedby={id}
-              ref={divRef}
             >
               <Avatar
-                style={{ height: "30px", width: "30px" }}
+                style={{ height: "37px", width: "37px" }}
                 src={currentProfile.image}
               ></Avatar>
             </IconButton>
