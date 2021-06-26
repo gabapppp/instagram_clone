@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PostCard from "../components/Home/postcard";
-
-import PostService from "../services/posts.service";
+import useFetch from "../components/Home/useFetch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,25 +18,44 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const [feed, setFeed] = useState([]);
+  const [Next, setNext] = useState("");
+  const { loading, error, feed, next } = useFetch(Next);
+  const loader = useRef(null);
+  const handleObserver = useCallback(
+    (entries) => {
+      const target = entries[0];
+      if (target.isIntersecting) {
+        if (next) {
+          setNext(next);
+        }
+      }
+    },
+    [next]
+  );
 
   useEffect(() => {
-    async function fetchData() {
-      await PostService.getFeed().then((response) => {
-        setFeed(response.data.results);
-      });
-    }
-    fetchData();
-  }, []);
+    const option = {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0,
+    };
+    const observer = new IntersectionObserver(handleObserver, option);
+    if (loader.current) observer.observe(loader.current);
+  }, [handleObserver]);
 
   return (
     <div className={classes.root}>
       <Grid container direction="column" justify="center" alignItems="center">
-        {feed.map((index) => (
-          <div className={classes.card} key={index.pk}>
-            <PostCard {...index}></PostCard>
-          </div>
-        ))}
+        <div>
+          {feed.map((index) => (
+            <div className={classes.card} key={index.pk}>
+              <PostCard {...index}></PostCard>
+            </div>
+          ))}
+        </div>
+        {loading && <p>Loading...</p>}
+        {error && <p>Error!</p>}
+        <div ref={loader} />
       </Grid>
     </div>
   );

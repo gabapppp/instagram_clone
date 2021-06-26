@@ -4,7 +4,7 @@ import authHeader from "./auth-header";
 const API_URL = "http://localhost:8000/api/comments/";
 
 const getcmt = (post_id) => {
-  return axios.get(API_URL, { post: post_id });
+  return axios.get(API_URL, { auth: authHeader(), params: { post: post_id } });
 };
 
 const postcmt = (post_id, content) => {

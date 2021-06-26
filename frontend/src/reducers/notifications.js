@@ -24,7 +24,6 @@ export default (state = initialState, action) => {
         notifications: payload.notifications,
       };
     case SET_UNREAD_COUNT:
-      console.log(payload.unread_count);
       return {
         ...state,
         unread_count: payload.unread_count,

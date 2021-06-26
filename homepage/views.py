@@ -1,6 +1,6 @@
 from django.db.models import aggregates
 from rest_framework import viewsets, mixins
-from .permissions import AuthenticatedCreation, AuthorDeletion, AuthorLikeDeletion
+from .permissions import AuthenticatedCreation,  AuthorLikeDeletion
 from .models import *
 from .serializers import *
 from .filters import PostFilterSet, LikeFilterSet, CommentFilterSet
@@ -14,7 +14,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mixins
     )
     serializer_class = PostSerializer
     filterset_class = PostFilterSet
-    permission_classes = [AuthenticatedCreation, AuthorDeletion]
+    permission_classes = [AuthenticatedCreation, ]
     pagination_class = PostPagination
 
 
@@ -36,7 +36,7 @@ class CommentViewSet(viewsets.ReadOnlyModelViewSet, mixins.CreateModelMixin, mix
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     filterset_class = CommentFilterSet
-    permission_classes = [AuthenticatedCreation, AuthorDeletion]
+    permission_classes = [AuthenticatedCreation, ]
 
     def get_queryset(self):
         queryset = super().get_queryset()

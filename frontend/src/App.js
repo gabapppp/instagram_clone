@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import PostDetails from "./pages/postDetail";
 import Header from "./components/common/AppBar";
 
 import { clearMessage } from "./actions/message";
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/:username" component={Profile} />
+            <Route exact path="/post/:pk" component={PostDetails} />
           </Switch>
         </div>
       </div>

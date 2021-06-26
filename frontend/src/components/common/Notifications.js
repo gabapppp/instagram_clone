@@ -58,7 +58,7 @@ function Notifications() {
       const interval = setTimeout(() => {
         dispatch(mark_all_as_read());
         dispatch(set_unread_count());
-      }, 500);
+      }, 300);
       return () => {
         clearTimeout(interval);
       };
@@ -76,9 +76,18 @@ function Notifications() {
   const renderNotification = (notification) => {
     const { actor, description, verb, timestamp } = notification;
     var date = new Date(timestamp).toLocaleDateString();
-
     switch (description) {
-      case "like":
+      case "welcome":
+        return (
+          <>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText
+              primary={<Typography variant="body1">{verb}</Typography>}
+            />
+            <Typography variant="body2">{date}</Typography>
+          </>
+        );
+      default:
         return (
           <>
             <ListItemIcon>
@@ -87,16 +96,9 @@ function Notifications() {
                 src={"http://localhost:8000" + actor.image}
               />
             </ListItemIcon>
-            <ListItemText primary={<Typography>{verb}</Typography>} />
-            <Typography variant="body2">{date}</Typography>
-          </>
-        );
-      default:
-        return (
-          <>
-            <ListItemIcon></ListItemIcon>
             <ListItemText
-              primary={<Typography variant="body1">{verb}</Typography>}
+              primary={<Typography>{actor.user}</Typography>}
+              secondary={verb}
             />
             <Typography variant="body2">{date}</Typography>
           </>

@@ -7,7 +7,7 @@ class PostFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = Post
-        fields = ('username', 'feed')
+        fields = ('username', 'feed', )
 
     def filter_user_feed(self, queryset, name, value):
         if value:

@@ -36,12 +36,17 @@ class PostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField('username', read_only=True)
+    avt = serializers.SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ['user', 'post' ,'content', 'date_created']
+        fields = ['user','avt', 'post' ,'content', 'date_created']
+        
+    def get_avt(self, post):
+        return post.user.profile.image.url
 
 class LikeSerializer(serializers.ModelSerializer):
     liker = serializers.SlugRelatedField('username', read_only=True)
+
     class Meta:
         model = Like
         fields = ['pk', 'post', 'liker', 'date_created']

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
 
 import likeService from "../../services/like.service";
 import cmtService from "../../services/cmt.service";
@@ -18,6 +19,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ModeCommentOutlinedIcon from "@material-ui/icons/ModeCommentOutlined";
 import PostDelDialog from "./PostDelDialog";
 import { Button, InputBase } from "@material-ui/core";
+import ImagesStepper from "./ImagesStepper";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,15 +56,6 @@ export default function PostCard(props) {
   const [content, setContent] = useState("");
   const [pkLike, setPkLike] = useState();
   const { profile: currentProfile } = useSelector((state) => state.profile);
-  function renderImage(images) {
-    return images.map((index) => (
-      <CardMedia
-        className={classes.media}
-        key={index.pk}
-        image={index.modelimage}
-      />
-    ));
-  }
 
   useEffect(() => {
     if (isLike) {
@@ -98,6 +91,22 @@ export default function PostCard(props) {
       setContent("");
     });
   };
+  const history = useHistory();
+  const routeToPost = () => {
+    history.push("/post/" + pk);
+  };
+
+  const renderImage = (images) => {
+    return images.map((index) => (
+      <CardMedia
+        onClick={routeToPost}
+        className={classes.media}
+        key={index.pk}
+        image={index.modelimage}
+      />
+    ));
+  };
+
   return (
     <Card
       className={classes.root}
@@ -106,7 +115,13 @@ export default function PostCard(props) {
     >
       <CardHeader
         avatar={<Avatar src={"http://localhost:8000" + avt} />}
-        action={<PostDelDialog pk={pk} />}
+        action={
+          <>
+            {currentProfile.username === user ? (
+              <PostDelDialog pk={pk} />
+            ) : null}
+          </>
+        }
         title={
           <Typography variant="h6" fontStyle="bold">
             {user}
@@ -114,7 +129,13 @@ export default function PostCard(props) {
         }
         subheader={date}
       />
-      {renderImage(images)}
+      {images.length === 1 ? (
+        renderImage(images)
+      ) : (
+        <CardMedia onClick={routeToPost}>
+          <ImagesStepper images={images} />
+        </CardMedia>
+      )}
       <CardContent style={{ paddingBottom: "0px" }}>
         <Typography variant="body1" color="textSecondary" component="p">
           {caption}
