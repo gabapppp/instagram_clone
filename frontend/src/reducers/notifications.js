@@ -1,7 +1,12 @@
-import { SET_NOTIFICATIONS } from "../actions/types";
+import {
+  SET_NOTIFICATIONS,
+  MARK_ALL_AS_READ,
+  SET_UNREAD_COUNT,
+} from "../actions/types";
 
 const initialState = {
   notifications: [],
+  unread_count: 0,
 };
 
 // eslint-disable-next-line
@@ -12,6 +17,17 @@ export default (state = initialState, action) => {
       return {
         ...state,
         notifications: payload.notifications,
+      };
+    case MARK_ALL_AS_READ:
+      return {
+        ...state,
+        notifications: payload.notifications,
+      };
+    case SET_UNREAD_COUNT:
+      console.log(payload.unread_count);
+      return {
+        ...state,
+        unread_count: payload.unread_count,
       };
 
     default:

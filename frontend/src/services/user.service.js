@@ -34,6 +34,53 @@ const unfollow = (username) => {
   });
 };
 
+const changepassword = (old, newP) => {
+  return axios.post(
+    API_URL + "changepassword/",
+    {
+      old_password: old,
+      new_password: newP,
+    },
+    { headers: authHeader() }
+  );
+};
+
+const changeBio = (username, bio) => {
+  return axios.put(
+    API_URL + username + "/",
+    {
+      user: {},
+      bio: bio,
+    },
+    { headers: authHeader() }
+  );
+};
+
+const changeAvt = (username, image) => {
+  return axios.put(
+    API_URL + username + "/",
+    {
+      user: {},
+      image: image,
+    },
+    { headers: authHeader() }
+  );
+};
+
+const changeNameEmail = (username, first_name, last_name, email) => {
+  return axios.put(
+    API_URL + username + "/",
+    {
+      user: {
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+      },
+    },
+    { headers: authHeader() }
+  );
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   getMyProfile,
@@ -41,4 +88,8 @@ export default {
   search,
   follow,
   unfollow,
+  changepassword,
+  changeBio,
+  changeAvt,
+  changeNameEmail,
 };

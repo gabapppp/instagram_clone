@@ -1,38 +1,42 @@
 from rest_framework.serializers import ModelSerializer, RelatedField
 from rest_framework import serializers
 from homepage.serializers import LikeSerializer, CommentSerializer, Like, Comment
+from homepage.models import Like, Comment
+from users.models import Profile, Follower
 from homepage.serializers import Follower, FollowerSerializer
 from notifications.models import Notification
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, models
 
 UserModel = get_user_model()
 
 
-class UserSerializer(ModelSerializer):
-    id = serializers.IntegerField()
-
+class ProfileSerializer(ModelSerializer):
+    user = serializers.SlugRelatedField('username', read_only=True)
+    id = serializers.ReadOnlyField(source='user.id')
+    image = serializers.ImageField(read_only=True)
     class Meta:
-        model = UserModel
-        fields = ['id', 'username']
+        model= Profile
+        fields = ['id', 'user', 'image']
 
 
 class GenericNotificationRelatedField(RelatedField):
 
     def to_representation(self, value):
         if isinstance(value, UserModel):
-            serializer = UserSerializer(value)
+            queryset = Profile.objects.get(user=value)
+            serializer = ProfileSerializer(queryset)
         if isinstance(value, Like):
             serializer = LikeSerializer(value)  
         if isinstance(value, Comment):
             serializer = CommentSerializer(value)
-        if isinstance(value,Follower):
+        if isinstance(value, Follower):
             serializer = FollowerSerializer(value)  
         return serializer.data
 
 
 class NotificationSerializer(ModelSerializer):
-    recipient = UserSerializer()
-    actor = UserSerializer()
+    recipient = GenericNotificationRelatedField(read_only=True)
+    actor = GenericNotificationRelatedField(read_only=True)
     unread = serializers.BooleanField()
     timestamp = serializers.DateTimeField(read_only=True)                                     
     target = GenericNotificationRelatedField(read_only=True)

@@ -20,17 +20,15 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
   const [feed, setFeed] = useState([]);
-  const [next, setNext] = useState("");
+
   useEffect(() => {
     async function fetchData() {
       await PostService.getFeed().then((response) => {
-        setNext(response.data.next);
         setFeed(response.data.results);
       });
     }
     fetchData();
   }, []);
-  console.log(next);
 
   return (
     <div className={classes.root}>

@@ -17,6 +17,7 @@ router.register('inbox', InboxViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('changepassword/', user_views.ChangePasswordView.as_view(), name='change_password'),
     path('register/', user_views.RegisterView.as_view(), name='register'),
     path('token/', user_views.MyObtainTokenPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh')

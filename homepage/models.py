@@ -9,7 +9,7 @@ from django.utils.text import Truncator
 class Post(models.Model):
     caption = models.CharField(max_length=2200, blank=True)  # caption is a field in this Post model. it specifies a class attribute Charfield and represents a database column. blank=True lets the field be optional left empty
     date_posted = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # foreign key calls on an outside model whether imported or in this file, CASCADE will delete the post if
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')  # foreign key calls on an outside model whether imported or in this file, CASCADE will delete the post if
 
     def __str__(self):
         return self.caption
@@ -48,4 +48,4 @@ class Like(models.Model):
     def save(self, *args, **kwargs):
         super(Like, self).save(*args, **kwargs)
         if(self.liker != self.post.user):
-            notify.send(self.liker, recipient=self.post.user, verb='liked your post!', description=self.post.pk, target=self)
+            notify.send(self.liker, recipient=self.post.user, verb='liked your post!', description='like', target=self)

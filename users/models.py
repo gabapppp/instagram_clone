@@ -20,7 +20,7 @@ class Profile(models.Model):
             output_size = (300,300)
             img.thumbnail(output_size)
             img.save(self.image.path)
-        notify.send(self.user, recipient=self.user, verb="Welcome to Instapy", description="welcome") 
+        
 
 class Follower(models.Model):
     follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')

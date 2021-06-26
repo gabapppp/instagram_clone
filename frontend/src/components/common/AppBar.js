@@ -5,7 +5,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
@@ -21,7 +20,7 @@ import PostAdd from "./Post";
 
 import { logout } from "../../actions/auth";
 import { getprofile } from "../../actions/profile";
-import { setNotifications } from "../../actions/notifications";
+import { set_unread_count } from "../../actions/notifications";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -71,11 +70,13 @@ export default function Header() {
   const { profile: currentProfile } = useSelector((state) => state.profile);
 
   const history = useHistory();
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getprofile());
-    dispatch(setNotifications());
+    dispatch(set_unread_count());
   }, [dispatch]);
+
   const routeToHome = () => {
     history.push(`/`);
   };
@@ -121,7 +122,7 @@ export default function Header() {
       >
         <Toolbar>
           <Button className={classes.titleBtn} onClick={routeToHome}>
-            <Typography className={classes.title} variant="h6">
+            <Typography className={classes.title} variant="h4">
               Instapy
             </Typography>
           </Button>
@@ -129,17 +130,14 @@ export default function Header() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton onClick={routeToHome}>
-              <HomeIcon color="action" style={{ fontSize: 37 }} />
+              <HomeIcon style={{ fontSize: 37 }} />
             </IconButton>
             <IconButton>
-              <Badge color="secondary">
-                <TelegramIcon color="action" style={{ fontSize: 37 }} />
-              </Badge>
+              <TelegramIcon style={{ fontSize: 37 }} />
             </IconButton>
             <PostAdd />
             <Notifications />
             <IconButton
-              aria-controls="customized-menu"
               aria-haspopup="true"
               variant="contained"
               onClick={handleProfileMenuOpen}

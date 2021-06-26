@@ -63,7 +63,6 @@ export default function PostAdd() {
       var image = { modelimage: base64 };
       var list = [image];
       setImage(list);
-      console.log();
     }
   };
 
