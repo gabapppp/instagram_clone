@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
-import TelegramIcon from "@material-ui/icons/Telegram";
+import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import Notifications from "./Notifications";
 import "@fontsource/grand-hotel";
 import { useHistory } from "react-router";
@@ -108,7 +108,10 @@ export default function Header() {
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileClick}>
+        <AccountCircleOutlinedIcon />
+        <Typography>Profile</Typography>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </StyledMenu>
   );
@@ -131,9 +134,6 @@ export default function Header() {
           <div className={classes.sectionDesktop}>
             <IconButton onClick={routeToHome}>
               <HomeIcon style={{ fontSize: 37 }} />
-            </IconButton>
-            <IconButton>
-              <TelegramIcon style={{ fontSize: 37 }} />
             </IconButton>
             <PostAdd />
             <Notifications />

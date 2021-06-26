@@ -132,8 +132,8 @@ export default function PostCard(props) {
       {images.length === 1 ? (
         renderImage(images)
       ) : (
-        <CardMedia onClick={routeToPost}>
-          <ImagesStepper images={images} />
+        <CardMedia>
+          <ImagesStepper pk={pk} images={images} />
         </CardMedia>
       )}
       <CardContent style={{ paddingBottom: "0px" }}>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import Button from "@material-ui/core/button";
 import IconButton from "@material-ui/core/IconButton";
 import AddBoxOutlinedIcon from "@material-ui/icons/AddBoxOutlined";
@@ -35,6 +35,7 @@ export default function PostAdd() {
   const [open, setOpen] = useState(false);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState([]);
+  const [fileArray, setFileArray] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,9 +61,9 @@ export default function PostAdd() {
     const file = e.target.files[0];
     const base64 = await convertBase64(file);
     if (base64) {
-      var image = { modelimage: base64 };
-      var list = [image];
-      setImage(list);
+      var imagess = { modelimage: base64 };
+      setImage([...image, imagess]);
+      setFileArray([...fileArray, file.name]);
     }
   };
 
@@ -86,19 +87,24 @@ export default function PostAdd() {
             id="caption"
             label="Caption"
             type="text"
+            size="small"
+            variant="outlined"
             onChange={handleCaptionChange}
           />
           <br />
-          <TextField
+          <input
             type="file"
-            inputProps={{
-              accept: "image/*",
-            }}
+            accept="image/*"
+            multiple
             required
-            label="Image"
             onChange={handleFileRead}
             size="small"
           />
+          <DialogContent>
+            {fileArray.map((file) => (
+              <Typography>{file}</Typography>
+            ))}
+          </DialogContent>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

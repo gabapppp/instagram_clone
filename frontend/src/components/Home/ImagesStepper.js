@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import Button from "@material-ui/core/Button";
@@ -30,6 +31,7 @@ export default function ImagesStepper(props) {
   const classes = useStyles();
   const theme = useTheme();
   const images = props.images;
+  const pk = props.pk;
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
@@ -40,13 +42,17 @@ export default function ImagesStepper(props) {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
+  const history = useHistory();
+  const routeToPost = () => {
+    history.push("/post/" + pk);
+  };
   return (
     <div className={classes.root}>
       <img
         className={classes.img}
         src={images[activeStep].modelimage}
         alt={images[activeStep].pk}
+        onClick={routeToPost}
       />
       <MobileStepper
         steps={maxSteps}
