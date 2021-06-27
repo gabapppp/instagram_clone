@@ -11,7 +11,7 @@ class PostFilterSet(django_filters.FilterSet):
 
     def filter_user_feed(self, queryset, name, value):
         if value:
-            queryset = queryset.filter(user__followers__following=self.request.user)
+            queryset = queryset.filter(user__followings__follower=self.request.user)
 
         return queryset
 

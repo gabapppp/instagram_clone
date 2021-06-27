@@ -67,6 +67,11 @@ function Notifications() {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    const interval = setTimeout(() => {
+      dispatch(mark_all_as_read());
+      dispatch(set_unread_count());
+    }, 300);
+    clearTimeout(interval);
   };
 
   const handleClose = () => {

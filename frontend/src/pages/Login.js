@@ -69,13 +69,14 @@ export default function Login(props) {
         window.location.reload();
       })
       .catch(() => {
-        setLoading(false);
+        setLoading(true);
       });
   };
 
   if (isLoggedIn) {
     return <Redirect to="/" />;
   }
+  console.log(message);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -152,7 +153,11 @@ export default function Login(props) {
           {message && (
             <div className="form-group">
               <div className="alert alert-danger" role="alert">
-                {message}
+                {message ? (
+                  <Typography> Wrong password or username</Typography>
+                ) : (
+                  message
+                )}
               </div>
             </div>
           )}
