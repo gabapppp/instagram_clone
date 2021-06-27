@@ -144,6 +144,9 @@ STATICFILES_DIRS = [
 
 ]
 
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '/')
+
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
