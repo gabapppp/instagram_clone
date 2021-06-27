@@ -4,8 +4,10 @@
 run frontend:
 
 > cd frontend
+then:
 > npm install
->  npm start
+then:
+> npm start
 
 run backend: 
 
