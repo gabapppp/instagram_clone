@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Info from "../components/Profile/info";
 import postsService from "../services/posts.service";
 import { getprofile } from "../actions/profile";
@@ -33,6 +33,7 @@ function Profile() {
   useEffect(() => {
     dispatch(getprofile());
   }, [dispatch]);
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -50,7 +51,11 @@ function Profile() {
         <GridList cellHeight={196} className={classes.gridList} cols={3}>
           {post.map((index) => (
             <GridListTile key={index.pk} cols={1}>
-              <img src={index.images[0].modelimage} alt={index.caption} />
+              <img
+                src={index.images[0].modelimage}
+                alt={index.caption}
+                onClick={() => history.push("/post/" + index.pk)}
+              />
             </GridListTile>
           ))}
         </GridList>
