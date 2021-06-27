@@ -136,7 +136,7 @@ export default function Info(props) {
             <Grid item xs container direction="column" spacing={5}>
               <Grid item xs>
                 <Grid item xs container>
-                  <Grid item xs={12} sm={8}>
+                  <Grid item xs={12} sm={6}>
                     <Typography
                       gutterBottom
                       variant="h3"
@@ -148,13 +148,13 @@ export default function Info(props) {
                   {currentProfile.username !== username ? (
                     <>
                       {isFollowing ? (
-                        <Grid item xs={12} sm={6}>
+                        <Grid style={{ padding: "20px" }} item xs={12} sm={6}>
                           <Button variant="primary" onClick={handleUnfollow}>
                             Unfollow
                           </Button>
                         </Grid>
                       ) : (
-                        <Grid item xs={12} sm={6}>
+                        <Grid style={{ padding: "20px" }} item xs={12} sm={6}>
                           <Button variant="primary" onClick={handleFollow}>
                             Follow
                           </Button>
@@ -162,7 +162,7 @@ export default function Info(props) {
                       )}
                     </>
                   ) : (
-                    <Grid item xs={12} sm={4}>
+                    <Grid style={{ padding: "10px" }} item xs={12} sm={6}>
                       <IconButton
                         className={classes.setBtn}
                         onClick={handleSetClick}

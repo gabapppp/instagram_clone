@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/button";
 import Avatar from "@material-ui/core/Avatar";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -62,7 +61,6 @@ export default function ChangeAvt(props) {
     const base64 = await convertBase64(file);
     if (base64) {
       setImage(base64);
-      console.log(base64);
     }
   };
 
@@ -116,16 +114,13 @@ export default function ChangeAvt(props) {
       >
         <DialogTitle id="form-dialog-title">Change your Avatar</DialogTitle>
         <DialogContent>
-          <TextField
+          <input
             type="file"
-            inputProps={{
-              accept: "image/*",
-            }}
+            accept="image/*"
             required
             fullWidth
             label="Image"
             onChange={handleFileRead}
-            size="small"
           />
         </DialogContent>
         <DialogActions>

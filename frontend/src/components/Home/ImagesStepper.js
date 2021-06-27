@@ -50,8 +50,8 @@ export default function ImagesStepper(props) {
     <div className={classes.root}>
       <img
         className={classes.img}
-        src={images[activeStep].modelimage}
-        alt={images[activeStep].pk}
+        src={images[activeStep].modelimage || null}
+        alt={images[activeStep].pk || null}
         onClick={routeToPost}
       />
       <MobileStepper

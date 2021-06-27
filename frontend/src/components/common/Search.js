@@ -88,7 +88,6 @@ export default function Search() {
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue);
-          history.push("/profile");
         }}
         open={open}
         onOpen={() => {

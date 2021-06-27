@@ -26,7 +26,7 @@ export default function PostDelDialog(props) {
   const AgreeOnclick = (e) => {
     e.preventDefault();
     postsService.delPost(props.pk).then((response) => {
-      console.log(response);
+      window.location.reload();
     });
   };
 

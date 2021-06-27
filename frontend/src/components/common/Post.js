@@ -36,6 +36,7 @@ export default function PostAdd() {
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState([]);
   const [fileArray, setFileArray] = useState([]);
+  const [error, setError] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,7 +54,18 @@ export default function PostAdd() {
   const handlePostAdd = (e) => {
     e.preventDefault();
     setOpen(false);
-    postsService.postPost(caption, image);
+    if (image.length !== 0 && caption !== "") {
+      postsService
+        .postPost(caption, image)
+        .then((response) => {
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      setError("Required Images");
+    }
   };
 
   const handleFileRead = async (e) => {
@@ -106,6 +118,7 @@ export default function PostAdd() {
             ))}
           </DialogContent>
         </DialogContent>
+        <DialogContent>{error}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel

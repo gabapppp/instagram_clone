@@ -44,7 +44,12 @@ const useStyles = makeStyles((theme) => ({
       width: "20ch",
     },
   },
-  cmtBtn: {},
+  titleBtn: {
+    textTransform: "none",
+    "&:hover": {
+      backgroundColor: "#fff",
+    },
+  },
 }));
 
 export default function PostCard(props) {
@@ -95,6 +100,9 @@ export default function PostCard(props) {
   const routeToPost = () => {
     history.push("/post/" + pk);
   };
+  const routeToUser = () => {
+    history.push("/" + user);
+  };
 
   const renderImage = (images) => {
     return images.map((index) => (
@@ -114,7 +122,9 @@ export default function PostCard(props) {
       style={{ border: "1px solid #eeeeee" }}
     >
       <CardHeader
-        avatar={<Avatar src={"http://localhost:8000" + avt} />}
+        avatar={
+          <Avatar onClick={routeToUser} src={"http://localhost:8000" + avt} />
+        }
         action={
           <>
             {currentProfile.username === user ? (
@@ -123,18 +133,24 @@ export default function PostCard(props) {
           </>
         }
         title={
-          <Typography variant="h6" fontStyle="bold">
-            {user}
-          </Typography>
+          <Button className={classes.titleBtn} onClick={routeToUser}>
+            <Typography variant="h6" fontStyle="bold">
+              {user}
+            </Typography>
+          </Button>
         }
         subheader={date}
       />
-      {images.length === 1 ? (
-        renderImage(images)
-      ) : (
-        <CardMedia>
-          <ImagesStepper pk={pk} images={images} />
-        </CardMedia>
+      {images.length === 0 ? null : (
+        <>
+          {images.length === 1 ? (
+            renderImage(images)
+          ) : (
+            <CardMedia>
+              <ImagesStepper pk={pk} images={images} />
+            </CardMedia>
+          )}
+        </>
       )}
       <CardContent style={{ paddingBottom: "0px" }}>
         <Typography variant="body1" color="textSecondary" component="p">
