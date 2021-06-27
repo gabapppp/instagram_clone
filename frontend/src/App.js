@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import PostDetails from "./pages/postDetail";
+import PostDetails from "./pages/PostDetail";
 import Header from "./components/common/AppBar";
 
 import { clearMessage } from "./actions/message";
