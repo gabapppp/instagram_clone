@@ -5,7 +5,6 @@ from django.urls import path, include
 from rest_framework import routers
 from . import views as post_views
 from users import views as user_views
-from directmessages.views import InboxViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 
 router = routers.DefaultRouter()
@@ -13,7 +12,6 @@ router.register('posts', post_views.PostViewSet)
 router.register('comments', post_views.CommentViewSet)
 router.register('likes', post_views.LikeViewSet)
 router.register('profile', user_views.ProfileViewSet)
-router.register('inbox', InboxViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
