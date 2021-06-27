@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'homepage.apps.HomepageConfig',
     'users.apps.UsersConfig',
-    'directmessages.apps.DirectmessagesConfig',
     'rest_framework',
     'notifications',
     'notifications_app',
