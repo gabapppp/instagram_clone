@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector, connect } from "react-redux";
+import { useHistory } from "react-router";
 import {
   setNotifications,
   mark_all_as_read,
@@ -44,6 +45,7 @@ function Notifications() {
   const { notifications: current, unread_count } = useSelector(
     (state) => state.notifications
   );
+  const history = useHistory();
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(setNotifications());
@@ -79,7 +81,7 @@ function Notifications() {
   };
 
   const renderNotification = (notification) => {
-    const { actor, description, verb, timestamp } = notification;
+    const { actor, description, verb, timestamp, target } = notification;
     var date = new Date(timestamp).toLocaleDateString();
     switch (description) {
       case "welcome":
@@ -95,14 +97,36 @@ function Notifications() {
       default:
         return (
           <>
-            <ListItemIcon>
+            <ListItemIcon
+              onClick={() => {
+                history.push("/" + actor.user);
+                handleClose();
+              }}
+            >
               <Avatar
                 size="small"
                 src={"http://localhost:8000" + actor.image}
               />
             </ListItemIcon>
             <ListItemText
-              primary={<Typography>{actor.user}</Typography>}
+              onClick={() => {
+                if (description === "follow") {
+                  history.push("/" + actor.user);
+                  handleClose();
+                } else {
+                  history.push("/post/" + target.id);
+                  handleClose();
+                }
+              }}
+              primary={
+                <Typography
+                  onClick={() => {
+                    history.push("/" + actor.user);
+                  }}
+                >
+                  {actor.user}
+                </Typography>
+              }
               secondary={verb}
             />
             <Typography variant="body2">{date}</Typography>

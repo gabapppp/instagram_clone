@@ -1,7 +1,6 @@
 from rest_framework.serializers import ModelSerializer, RelatedField
 from rest_framework import serializers
-from homepage.serializers import LikeSerializer, CommentSerializer, Like, Comment
-from homepage.models import Like, Comment
+from homepage.models import Post
 from users.models import Profile, Follower
 from homepage.serializers import Follower, FollowerSerializer
 from notifications.models import Notification
@@ -18,17 +17,18 @@ class ProfileSerializer(ModelSerializer):
         model= Profile
         fields = ['id', 'user', 'image']
 
-
+class PostSerializer(ModelSerializer):
+    class Meta:
+        model= Post
+        fields = ['id']
 class GenericNotificationRelatedField(RelatedField):
 
     def to_representation(self, value):
         if isinstance(value, UserModel):
             queryset = Profile.objects.get(user=value)
             serializer = ProfileSerializer(queryset)
-        if isinstance(value, Like):
-            serializer = LikeSerializer(value)  
-        if isinstance(value, Comment):
-            serializer = CommentSerializer(value)
+        if isinstance(value, Post):
+            serializer = PostSerializer(value)
         if isinstance(value, Follower):
             serializer = FollowerSerializer(value)  
         return serializer.data

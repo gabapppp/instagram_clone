@@ -34,7 +34,7 @@ class Comment(models.Model):
         n = 4
         truncatewords = Truncator(self.content).words(n)
         if (self.user != self.post.user):
-            notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment')
+            notify.send(self.user, recipient=self.post.user, verb='commented "' + truncatewords + '" on your post!', action_object=self.post, description='comment', target=self)
 
 
 class Like(models.Model):
