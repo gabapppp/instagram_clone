@@ -15,10 +15,6 @@ run backend:
 
 > pip install -r requirements.txt
 
-or:
-
->  source ./venv/Scripts/activate
-
 then:
 
 > python manage.py migrate
