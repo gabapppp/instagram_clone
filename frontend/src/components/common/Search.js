@@ -8,12 +8,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import userService from "../../services/user.service";
 import { useHistory } from "react-router";
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
@@ -39,39 +33,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Search() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
   const [value, setValue] = useState(null);
+  const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
+  const history = useHistory();
 
-  useEffect(() => {
-    let active = true;
+  const onChangeHandle = async (value) => {
+    // this default api does not support searching but if you use google maps or some other use the value and post to get back you reslut and then set it using setOptions
+    const user = await userService.search(value).then((res) => {
+      return res.data;
+    });
 
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      const user = await userService.search().then((res) => {
-        return res.data;
-      });
-      await sleep(1e3);
-      if (active) {
-        setOptions(Object.keys(user).map((key) => user[key].username));
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
+    setOptions(Object.keys(user).map((key) => user[key].username));
+  };
 
   useEffect(() => {
     if (!open) {
       setOptions([]);
     }
   }, [open]);
-
-  const history = useHistory();
 
   useEffect(() => {
     if (value) {
@@ -85,24 +65,32 @@ export default function Search() {
       <Autocomplete
         id="search"
         style={{ width: "250px" }}
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
         open={open}
         onOpen={() => {
           setOpen(true);
         }}
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
         onClose={() => {
           setOpen(false);
         }}
-        disableClearable
         options={options}
+        loading={loading}
+        disableClearable
         renderInput={(params) => (
           <TextField
             {...params}
             placeholder="Search…"
             className={classes.input}
+            onChange={(ev) => {
+              // dont fire API if the user delete or not entered anything
+
+              if (ev.target.value !== "" || ev.target.value !== null) {
+                onChangeHandle(ev.target.value);
+              }
+            }}
             InputProps={{
               ...params.InputProps,
               disableUnderline: true,

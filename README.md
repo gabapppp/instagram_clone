@@ -19,3 +19,6 @@ then:
 
 > python manage.py migrate
 > python manage.py runserver
+
+migrate db:
+> python manage.py migrate
