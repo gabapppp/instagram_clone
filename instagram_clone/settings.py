@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-import django_heroku
 from django.conf import settings
 import os
 
@@ -29,8 +28,6 @@ SECRET_KEY = '9_8@t%jyz@65!60r1ruvss-=m+h4p*rd8j(6&4x#q-q5h)fd*6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['https://instaclone201.herokuapp.com/']
 
 
 # Application definition
@@ -72,7 +69,7 @@ ROOT_URLCONF = 'instagram_clone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'frontend/build') ], 
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,7 +83,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instagram_clone.wsgi.application'
-
 
 
 # Database
@@ -142,7 +138,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'instagram_clone.urls'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -154,16 +150,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '')
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
-        ],
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ],
+    ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
 }
 
-DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}
+DJANGO_NOTIFICATIONS_CONFIG = {'USE_JSONFIELD': True}
 
 
 SIMPLE_JWT = {
@@ -174,7 +170,3 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
-
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())

@@ -5,10 +5,10 @@ import Info from "../components/Profile/info";
 import postsService from "../services/posts.service";
 import { getprofile } from "../actions/profile";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/paper";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
+import { makeStyles } from "@material-ui/styles";
+import Paper from "@material-ui/core/Paper";
+import ImageList from "@material-ui/core/ImageList";
+import ImageListItem from "@material-ui/core/ImageListItem";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,17 +48,19 @@ function Profile() {
     <div style={{ marginTop: "64px" }}>
       <Info username={username} />
       <Paper className={classes.paper} square elevation={0}>
-        <GridList cellHeight={196} className={classes.gridList} cols={3}>
-          {post.map((index) => (
-            <GridListTile key={index.pk} cols={1}>
+        <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={196}>
+          {post.map((item) => (
+            <ImageListItem key={item.img}>
               <img
-                src={index.images[0].modelimage}
-                alt={index.caption}
-                onClick={() => history.push("/post/" + index.pk)}
+                src={`${item.images[0].modelimage}?w=164&h=164&fit=crop&auto=format`}
+                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                alt={item.caption}
+                loading="lazy"
+                onClick={() => history.push("/post/" + item.pk)}
               />
-            </GridListTile>
+            </ImageListItem>
           ))}
-        </GridList>
+        </ImageList>
       </Paper>
     </div>
   );

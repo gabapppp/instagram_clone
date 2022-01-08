@@ -8,4 +8,4 @@ django-extra-fields
 django-cors-headers
 whitenoise
 gunicorn
-django-heroku
+
