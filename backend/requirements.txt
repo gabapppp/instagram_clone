@@ -1,11 +1,11 @@
 
-django
+django==3.2
 djangorestframework
 django-notifications-hq
 django-filter
 djangorestframework-simplejwt
+wheel
 django-extra-fields
 django-cors-headers
-whitenoise
-gunicorn
-
+pillow
+psycopg2-binary

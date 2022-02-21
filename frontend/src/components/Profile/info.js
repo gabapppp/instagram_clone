@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import userService from "../../services/user.service";
-import { makeStyles, withStyles } from "@material-ui/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";

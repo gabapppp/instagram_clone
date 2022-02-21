@@ -10,7 +10,7 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { login } from "../actions/auth";

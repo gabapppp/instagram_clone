@@ -6,7 +6,7 @@ import postsService from "../services/posts.service";
 import likeService from "../services/like.service";
 import cmtService from "../services/cmt.service";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -211,29 +211,29 @@ export default function PostDetails() {
               >
                 {cmtList
                   ? cmtList.map((index) => (
-                      <div>
-                        <List>
-                          <ListItem>
-                            <ListItemAvatar>
-                              <Avatar
-                                src={"http://localhost:8000/" + index.avt}
-                              />
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary={index.user}
-                              secondary={index.content}
+                    <div>
+                      <List>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar
+                              src={"http://localhost:8000/" + index.avt}
                             />
-                            {currentProfile.username === index.user ? (
-                              <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="delete">
-                                  <DeleteIcon />
-                                </IconButton>
-                              </ListItemSecondaryAction>
-                            ) : null}
-                          </ListItem>
-                        </List>
-                      </div>
-                    ))
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={index.user}
+                            secondary={index.content}
+                          />
+                          {currentProfile.username === index.user ? (
+                            <ListItemSecondaryAction>
+                              <IconButton edge="end" aria-label="delete">
+                                <DeleteIcon />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          ) : null}
+                        </ListItem>
+                      </List>
+                    </div>
+                  ))
                   : null}
               </CardContent>
               <div className={classes.comment}>

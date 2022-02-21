@@ -7,7 +7,7 @@ import {
   set_unread_count,
 } from "../../actions/notifications";
 
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";

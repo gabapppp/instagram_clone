@@ -5,7 +5,7 @@ import Info from "../components/Profile/info";
 import postsService from "../services/posts.service";
 import { getprofile } from "../actions/profile";
 
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import ImageList from "@material-ui/core/ImageList";
 import ImageListItem from "@material-ui/core/ImageListItem";
