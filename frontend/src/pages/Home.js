@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { Grid } from "@material-ui/core";
+import Grid from '@mui/material/Grid';
 import { makeStyles } from "@material-ui/styles";
 import PostCard from "../components/Home/postcard";
 import useFetch from "../components/Home/useFetch";
